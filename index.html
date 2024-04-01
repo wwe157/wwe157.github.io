@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abill Music</title>
+    <link rel="icon" type="image/x-icon" href="img/g.jpg" style="border-radius: 50%;">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="style.css">
+<!-- alphine js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script src="app.js"></script>
+</head>
+<body>
+    <header x-data>
+        <a href="#" class="logo">Abill <span style="font-style: italic; color: #0c6efd;">Music</span></a>
+
+    <nav class="navbar">
+        <a class="active" href="#home">Beranda</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#menu">Kami Siap Melayani</a>
+        <a href="#contact">Kontak Kami</a>
+        <a href="#social-media">Social Media Kami</a>
+    </nav>
+
+    <div class="icons">
+        <i class="fas fa-bars" id="menu-bars"></i>
+        <i id="search-icon"></i>
+        <!-- <i class="fas fa-search" id="search-icon"></i> -->
+        <!-- <a href="#" class="fas fa-heart"></a> -->
+        <a href="#" class="fas fa-shopping-cart shoping-cart" id="shopping-cart-button">
+            <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+        </a>
+        
+    </div>
+    <!-- shoping card start -->
+    <div class="shopping-cart">
+        <template x-for="(item, index) in $store.cart.items" x-keys="index">
+        <div class="cart-item">
+            <img :src="`img/${item.img}`" :alt="item.name">
+            <div class="item-detail">
+                <h3 x-text="item.name"></h3>
+                <div class="item-price">
+                    <span x-text="rupiah(item.price)"></span> &times;
+                    <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+                    <span x-text="item.quantity"></span>
+                    <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+                    <span x-text="rupiah(item.total)"></span>
+                </div>
+            </div>
+        </div>
+    </template>
+    <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem;">Cart Is Empty</h4>
+    <h4 x-show="$store.cart.items.length">Total : <span x-text="rupiah($store.cart.total)"></span> </h4>
+
+    <div class="form-container" x-show="$store.cart.items.length">
+        <form action="" id="checkoutForm">
+            <h5>Costumer Detail</h5>
+            <label for="">
+                <span>Name</span>
+                <input type="text" name="name" id="name">
+            </label>
+
+            <label for="">
+                <span>Name</span>
+                <input type="email" name="email" id="email">
+            </label>
+
+            <label for="">
+                <span>Nomor Hp</span>
+                <input type="number" name="nohp" id="nohp" autocomplete="off">
+            </label>
+            <button class="checkout-button" type="submit" id="checkout-button">Check Out</button>
+        </form>
+    </div>
+    </div>
+    <!-- shopping card end -->
+    
+</header>
+
+<!-- header section ends-->
+
+<!-- search form  -->
+
+<form action="" id="search-form">
+    <input type="search" placeholder="search here..." name="" id="search-box">
+    <label for="search-box" class="fas fa-search"></label>
+    <i class="fas fa-times" id="close"></i>
+</form>
+  
+<!-- shoping card start -->
+
+<!-- shopping card end -->
+    <section class="hero" id="home">
+        <div class="content">
+            <p>Kami Siap Melayani</p>
+            <h1>Acara Pernikahan, Acara Ulang Tahun, Acara Syukuran Keluarga, <span>Dll</span></h1>
+            <a href="test.html" class="cta"> Abill Music</a>
+        </div>
+    </section>
+        <!-- hero end -->
+        
+    
+
+    <!-- tentang kami start -->
+    <section class="about" id="about">
+
+        <h3 class="sub-heading"><span style="color: #232e35;"> Tentang</span>Kami </h3>
+        <p class="heading"> Mengapa Memilih Kami </p>
+    
+        <div class="row">
+    
+            <div class="image">
+                <img src="img/about.jpg" alt="">
+            </div>
+    
+            <div class="content">
+                <h3>Kenapa Memilih Music Kami</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, sequi corrupti corporis quaerat voluptatem ipsam neque labore modi autem, saepe numquam quod reprehenderit rem? Tempora aut soluta odio corporis nihil!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, nemo. Sit porro illo eos cumque deleniti iste alias, eum natus.</p>
+                <div class="icons-container">
+                    <div class="icons">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span>Se-kota Palembang</span>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>Harga Murah</span>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-headset"></i>
+                        <span>Kami siap melayani 24Jam</span>
+                    </div>
+                </div>
+                <a href="https://wa.me/0895636882809" target="_blank" class="btn"><i class="fa-brands fa-square-whatsapp fa-2xl" style="color: #25dd66;"></i> Hubungi Kami</a>
+            </div>
+    
+        </div>
+    
+    </section>
+    <!-- tentang kami end -->
+    <!-- soacial media start -->
+
+    <!-- social media end -->
+    <!-- kami siap melayani start -->
+    <section class="menu" id="menu" x-data="products">
+
+        <h3 class="sub-heading"> <span style="color:#232e35"> Kami Siap </span> Melayani  </h3>
+        <p class="heading"> Ulang tahun, acara pernikahan, syukuran keluarga & dll </p>
+    
+        <div class="box-container">
+            <template x-for="(item, index) in items" x-key="index">
+            <div class="box">
+                <div class="image">
+                    <img :src="`img/${item.img}`" :alt="item.name">
+                    <!-- <a href="#" class="fas fa-heart fas fa-shopping-cart" @click.prevent="$store.cart.add(item)"></a> -->
+                </div>
+                <div class="content">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <h3 x-text="item.name"></h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Excepturi, accusantium.</p>
+                    <!-- <div class="btn"><span x-text="rupiah(item.price)"></span></div> -->
+                   
+                </div>
+            </div>
+        </template>
+            
+    
+            
+            </div>
+    
+        </div>
+    
+    </section>
+    <!-- kami siap melayani end -->
+
+    <!-- social media start -->
+    <section id="contact" class="contact">
+        <h3 class="sub-heading"><span style="color: #232e35;"> Contact </span> Me</h3>
+        <p class="heading"> Kirim Masukan & Saran</p>
+
+        <div class="row">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127504.44554001236!2d104.68056240777956!3d-2.9547940565707647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3b75e8fc27a3e3%3A0x3039d80b220d0c0!2sPalembang%2C%20Kota%20Palembang%2C%20Sumatera%20Selatan!5e0!3m2!1sid!2sid!4v1710776711901!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="map"></iframe>
+        
+           
+            <form action="" name="contact-form">
+                <div class="alert d-none">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    <strong>Terima Kasih!</strong> Pesan Anda Sudah Kami Terima !!!
+                  </div>
+                <div class="input-group">
+                    <i data-feather="user"></i>
+                    <input type="text" name="nama" id="nama" placeholder="Masukkan Nama Anda">
+                </div>
+                <div class="input-group">
+                    <i data-feather="mail"></i>
+                    <input type="email" name="email" id="email" placeholder="Alamat Email">
+                </div>
+                <div class="input-group">
+                    <i data-feather="phone"></i>
+                    <input type="text" name="nohp" id="nohp" placeholder="Nomor Hp">
+                </div>
+                <div class="input-group">
+                    <textarea type="text" name="pesan" id="pesan" placeholder="Masukkan Pesan..." rows="4" cols="50"></textarea>
+                </div>
+                <button type="submit" class="btn btn-kirim">Kirim Pesan</button>
+                <button type="button" class="btn btn-loading d-none" disabled style="background: rgb(90, 128, 235);">
+                <span class="loader"></span> Loading...</button>
+            </form>
+        </div>
+    </section>
+    <!-- Social media end -->
+
+  <!-- social media start -->
+  <section class="products" id="social-media">
+    <h3 class="sub-heading"><span style="color: #232e35;"> Social Media </span> Kami</h3>
+    <p class="heading"> Follow Social Media Kami</p>
+    
+    <div class="row">
+        <div class="product-card">
+            <div class="product-icons">
+            </div>   
+            <div class="product-image">
+                <img src="img/pic-1.png" alt="product-1">
+                <h3>Abill Music</h3>
+                <h3>5000 Followers</h3>
+                <div class="product-stars"> 
+                    <i data-feather="star" class="star-full"></i>
+                    <i data-feather="star" class="star-full"></i>
+                    <i data-feather="star" class="star-full"></i>
+                    <i data-feather="star" class="star-full"></i>
+                    <i data-feather="star" class="star-full"></i>
+             </div>
+            </div>
+            <div class="product-content">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/2.jpg" alt="" style="width: 50px;">
+               <img src="img/33.jpg" alt="" style="width: 50px;">
+               <img src="img/about.jpg" alt="" style="width: 50px;">
+               <img src="img/3.png" alt="" style="width: 50px;">
+            
+              <a href="https://www.instagram.com/tribunsumsel/" target="_blank" class="btn"><i class="fa-brands fa-instagram fa-2xl" style="color: #fafafa;"></i> Kunjungi Instagram Kami</a>
+                
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-icons">
+            </div>   
+            <div class="product-image">
+                <img src="img/pic-2.png" alt="product-1">
+                <h3>Abill Music</h3>
+                <h3>5000 Pengikut</h3>
+                <div class="product-stars"> 
+                    <i data-feather="star" class="star-full"></i>
+                    <i data-feather="star"></i>
+                    <i data-feather="star"></i>
+                    <i data-feather="star"></i>
+                    <i data-feather="star"></i>
+             </div>
+            </div>
+            <div class="product-content">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+            
+              <a href="https://www.facebook.com/sripoku" target="_blank" class="btn"><i class="fa-brands fa-square-facebook fa-2xl" style="color: #5082da;"></i> Kunjungi Facebook Kami</a>
+                
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-icons">
+            </div>   
+            <div class="product-image">
+                <img src="img/pic-3.png" alt="product-1">
+                <h3>Hubungi</h3>
+                <h3>Whatsapp Kami</h3>
+                <div class="product-stars"> 
+                    <i data-feather="star" class="star-full"></i>
+                    <i data-feather="star"></i>
+                    <i data-feather="star"></i>
+                    <i data-feather="star"></i>
+                    <i data-feather="star"></i>
+             </div>
+            </div>
+            <div class="product-content">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+               <img src="img/1.jpg" alt="" style="width: 50px;">
+            
+              <a href="https://wa.me/0895636882809" target="_blank" class="btn"><i class="fa-brands fa-square-whatsapp fa-2xl" style="color: #25dd66;"></i> Hubungi Sales Kami</a>
+                
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- social media kami end -->
+   
+    <!-- footer section starts  -->
+<div class="footer">
+    <div class="footer2">
+<div class="footer3">
+    <div class="footer4">
+        <h2>Abill Music</h2>
+        <h3>Hubungi Kami</h3>
+        <p>abillmusic@gmail.com</p>
+            <p>Jl.May Zen lr.Peternakan,no.84 RT/RW:033/001, Kec.kalidoni, kel.sei-selincah Palembang</p>
+            <p>Suamatra Selatan</p>
+    </div>
+    <div class="footer-kategori">
+        <h3>Kategori Acara</h3>
+        <ul>
+            <li><a href="" class="kategori">Pernikahan</a></li>
+            <li><a href="" class="kategori">Ulang Tahun</a></li>
+            <li><a href="" class="kategori">Yasinan</a></li>
+            <li><a href="" class="kategori">Aqiqah</a></li>
+            <li><a href="" class="kategori">Syukuran Keluarga</a></li>
+        </ul>
+    </div>
+    <div class="tautan">
+        <h3>Tautan</h3>
+        <ul>
+            <li><a href="" class="tautan-link">Beranda</a></li>
+            <li><a href="" class="tautan-link">Tentang Kami</a></li>
+            <li><a href="" class="tautan-link">Kami Melayani</a></li>
+            <li><a href="" class="tautan-link">Sosial Media </a></li>
+            <li><a href="" class="tautan-link">Hubungi Kami</a></li>
+        </ul>
+    </div>
+</div>
+<hr>
+<div class="social-media-link">
+<div class="social-media-link2">
+   <i data-feather="youtube" class="social-media-items"></i>
+
+   
+    <i data-feather="instagram" class="social-media-items"></i>
+  
+    <i data-feather="phone-call" class="social-media-items"></i>
+
+    <i data-feather="github" class="social-media-items"></i>
+
+    <i data-feather="video" class="social-media-items"></i>
+
+    <i data-feather="twitter" class="social-media-items"></i>
+</div>
+<p class="link">Created by <a href="https://wa.me/0895636882809" target="_blank" class="text-primary">Abill Music</a> | &copy;<a href="https://wa.me/0895636882809" target="_blank" class="text-sky-500"> <script>document.write(new Date().getFullYear())</script></a></p>
+</div>
+    </div>
+</div>
+<!-- footer section ends -->
+
+
+    
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>    
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <script>
+        feather.replace();
+        </script>
+    <script src="script.js"></script>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwHnjl0tZjXIG2uQ8mHwyjgG9e_DRMUZyXw_sdjpw5A6yZifua2cEd_ieWmMZpx5tE_dg/exec'
+        const form = document.forms['contact-form'];
+
+        const btnKirim = document.querySelector('.btn-kirim');
+        const btnloading = document.querySelector('.btn-loading');
+        const MyAlert = document.querySelector('.alert');
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+
+            // ketika tombol submit diklik
+            // tampilkan tombol loding hilangkan tomboll kirim
+            btnloading.classList.toggle('d-none');
+            btnKirim.classList.toggle('d-none');
+        
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                // tampilkan tombol kirim hilangkan tombol loading
+                btnloading.classList.toggle('d-none');
+                btnKirim.classList.toggle('d-none');
+                // tampilkan alert
+                MyAlert.classList.toggle('d-none');
+                // reset formnya
+                form.reset();
+                console.log('Success!', response)
+            })
+            .catch(error => console.error('Error!', error.message))
+        })
+      </script>
+
+</body>
+</html>

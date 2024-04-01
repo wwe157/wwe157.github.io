@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>view-timeline demo</title>
+</head>
+<style type="text/css">
+  #container {
+    display:  flex;
+    flex-direction: column;
+    border:  1px solid black;
+    height:  500px;
+    width:  500px;
+    overflow-x:  hidden;
+    overflow-y:  scroll;
+    position:  relative;
+    align-items:  flex-start;
+    resize: both;
+  }
+
+  #container.rtl {
+    direction: rtl;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  #container.ltr {
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  #containerwrapper {
+    position: relative;
+    width: max-content;
+  }
+
+  #containerwrapper.inset::before,
+  #containerwrapper.inset::after {
+    content: '';
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: red;
+  }
+
+  #containerwrapper.inset::before {
+    top: 100px;
+  }
+  #containerwrapper.inset::after {
+    bottom: 200px;
+  }
+
+  #overlay {
+    position: absolute;
+    top:  10px;
+    left:  10px;
+    width:  500px;
+    height:  500px;
+    pointer-events: none;
+  }
+
+  #overlay.rtl {
+    direction:  rtl;
+  }
+
+  .spacer {
+    display:  inline-block;
+    flex:  none;
+    height:  120vh;
+    width:  120vw;
+  }
+
+  #target {
+    box-sizing: border-box;
+    background-color:  rgba(0, 0, 255, 0.5);
+    display:  inline-block;
+    flex:  none;
+    height: 125px;
+    width:  90%;
+  }
+
+  #target.taller {
+    height: 650px;
+  }
+
+  #target.borders {
+    border: 25px solid #e0c58b;
+  }
+
+  #container.rtl > #target,
+  #container.ltr > #target {
+    height:  90%;
+    width: 125px;
+  }
+
+  #container.rtl > #target.taller,
+  #container.ltr > #target.taller {
+    width: 650px;
+  }
+
+  .progress-bar,
+  .progress-bar-progress {
+    border:  1px solid green;
+    height:  20px;
+    width:  200px;
+    position:  absolute;
+    inset-inline-start:  20px;
+    padding:  0;
+  }
+
+  .progress-bar > span {
+    padding-left:  5px;
+    padding-right:  5px;
+  }
+
+  .progress-bar-progress {
+    border-color:  transparent;
+    background-color: rgba(0, 200, 0, 0.3);
+    width: 0px;
+  }
+
+</style>
+<body>
+  <div id="containerwrapper">
+    <div id="container">
+      <div class="spacer"></div>
+      <div id="target"></div>
+      <div class="spacer"></div>
+    </div>
+  </div>
+  <div id="overlay">
+    <div class="progress-bar" style="top: 20px;"><span>cover</span></div>
+    <div class="progress-bar" style="top: 70px;"><span>contain</span></div>
+    <div class="progress-bar" style="top: 120px;"><span>entry</span></div>
+    <div class="progress-bar" style="top: 170px;"><span>exit</span></div>
+    <div class="progress-bar" style="top: 220px">
+      <span>contain 25% 75%</span>
+    </div>
+    <div class="progress-bar" style="top: 270px">
+      <span>entry 150% exit -50%</span>
+    </div>
+    <div class="progress-bar" style="top: 320px;"><span>entry-crossing</span></div>
+    <div class="progress-bar" style="top: 370px;"><span>exit-crossing</span></div>
+    <div class="progress-bar-progress" style="top: 20px;"></div>
+    <div class="progress-bar-progress" style="top: 70px;"></div>
+    <div class="progress-bar-progress" style="top: 120px;"></div>
+    <div class="progress-bar-progress" style="top: 170px;"></div>
+    <div class="progress-bar-progress" style="top: 220px;"></div>
+    <div class="progress-bar-progress" style="top: 270px;"></div>
+    <div class="progress-bar-progress" style="top: 320px;"></div>
+    <div class="progress-bar-progress" style="top: 370px;"></div>
+  </div>
+  <input type="radio" name="layout" id="vertical-tb" checked>
+  <label for="vertical-tb">Vertical top to bottom</label>
+  <input type="radio" name="layout" id="horizontal-ltr">
+  <label for="horizontal-ltr">Horizontal left to right</label>
+  <input type="radio" name="layout" id="horizontal-rtl">
+  <label for="horizontal-rtl">Horizontal right to left</label>
+  <br>
+  <input type="checkbox" name="subject-size" id="taller-than-scrollport-subject">
+  <label for="taller-than-scrollport-subject">Taller than scrollport subject</label>
+  <input type="checkbox" name="subject-borders" id="subject-has-borders">
+  <label for="subject-has-borders">Subject has borders</label>
+  <input type="checkbox" name="timeline-insets" id="timeline-insets">
+  <label for="timeline-insets">Use inset 100px 200px</label>
+</body>
+<script src="../../dist/scroll-timeline.js"></script>
+<script type="text/javascript">
+  "use strict";
+
+  let layout = 'vertical-tb';
+  let inset = 'auto';
+  const progressBars = document.querySelectorAll('.progress-bar-progress');
+  const createProgressAnimation = (bar, rangeStart, rangeEnd, axis, inset) => {
+    const target = document.getElementById('target');
+    const viewTimeline = new ViewTimeline({
+      'subject': target,
+      'axis': axis,
+      'inset': inset
+    });
+    bar.animate( { width: ['0px', '200px' ] }, {
+      timeline: viewTimeline,
+      rangeStart: `${rangeStart}`,
+      rangeEnd: `${rangeEnd}`,
+      fill: 'both'
+    });
+  }
+  const createAnimations = () => {
+    const axis = layout == 'vertical-tb' ? 'block' : 'inline';
+    document.getAnimations().forEach(anim => {
+      anim.cancel();
+    });
+    createProgressAnimation(progressBars[0], 'cover', 'cover', axis, inset);
+    createProgressAnimation(progressBars[1], 'contain', 'contain', axis, inset);
+    createProgressAnimation(progressBars[2], 'entry', 'entry', axis, inset);
+    createProgressAnimation(progressBars[3], 'exit', 'exit', axis, inset);
+    createProgressAnimation(progressBars[4], 'contain 25%', 'contain 75%',
+                            axis, inset);
+    createProgressAnimation(progressBars[5], 'entry 150%', 'exit -50%',
+                            axis, inset);
+    createProgressAnimation(progressBars[6], 'entry-crossing', 'entry-crossing',
+                            axis, inset);
+    createProgressAnimation(progressBars[7], 'exit-crossing', 'exit-crossing',
+                            axis, inset);
+  };
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('change', (evt) => {
+      document.getAnimations().forEach(anim => {
+        anim.cancel();
+      });
+
+      switch (event.target.name) {
+        case 'layout':
+          const selection = event.target.id;
+          switch(selection) {
+            case 'vertical-tb':
+              container.classList.remove('rtl');
+              container.classList.remove('ltr');
+              overlay.classList.remove('rtl');
+              break;
+
+            case 'horizontal-ltr':
+              container.classList.remove('rtl');
+              container.classList.add('ltr');
+              overlay.classList.remove('rtl');
+              break;
+
+            case 'horizontal-rtl':
+              container.classList.add('rtl');
+              container.classList.remove('ltr');
+              overlay.classList.add('rtl');
+          }
+          layout = selection;
+          break;
+
+        case 'subject-size':
+          if(event.target.checked) {
+            target.classList.add('taller');
+          } else {
+            target.classList.remove('taller');
+          }
+          break;
+        case 'subject-borders':
+          if(event.target.checked) {
+            target.classList.add('borders');
+          } else {
+            target.classList.remove('borders');
+          }
+          break;
+        case 'timeline-insets':
+          if(event.target.checked) {
+            inset = '100px 200px';
+            containerwrapper.classList.add('inset');
+          } else {
+            inset = 'auto';
+            containerwrapper.classList.remove('inset');
+          }
+          break;
+      }
+
+      createAnimations();
+    });
+  });
+
+  createAnimations('vertical-tb');
+</script>
+</html>

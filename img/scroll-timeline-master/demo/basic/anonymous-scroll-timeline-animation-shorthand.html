@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<title>Anonymous Scroll Progress Timeline</title>
+
+<style>
+  @keyframes move {
+    to { transform: translateX(350px) translateY(2000px); }
+  }
+
+  @keyframes colorChange {
+    from { background: red; }
+    to { background: blue; }
+  }
+
+  @keyframes widthChange {
+    from { width: 100px; }
+    to { width: 120px; }
+  }
+
+@keyframes outlineChange {
+  from { outline: 0px solid lime; }
+  to { outline: 10px solid lime; }
+}
+
+  #box_one {
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    overflow-y: scroll;
+    animation:
+      linear colorChange both,
+      linear widthChange both,
+      move linear,
+      linear outlineChange both;
+    animation-timeline:
+      scroll(root),
+      auto,
+      scroll(nearest y),
+      scroll(self y);
+  }
+
+  .content {
+    height: 400px;
+  }
+
+  .spacer {
+    width: 100%;
+    height: 2000px;
+  }
+
+  #container {
+    width: 500px;
+    height: 500px;
+    background-color:beige;
+    overflow: auto;
+  }
+
+  body {
+    height: 1000px;
+  }
+</style>
+
+<body>
+
+  <div id="container">
+    <div id="box_one">
+      <div class="content"></div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <script src="../../dist/scroll-timeline.js"></script>
+</body>
